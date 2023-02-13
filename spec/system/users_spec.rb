@@ -43,7 +43,72 @@ RSpec.describe 'Users', type: :system do
           expect(page).to have_content 'メールアドレスはすでに存在します'
           expect(current_path).to eq users_path
         end
-      end    
+      end
+    end
+
+    describe 'マイページ' do
+      context 'ログインしていない状態' do
+        it 'マイページへのアクセスが失敗する' do
+          visit user_path(user)
+          expect(page).to have_content 'ログインが必要です'
+          expect(current_path).to eq login_path
+        end
+      end
     end
   end
-end          
+
+  describe 'ログイン後' do
+    before { login_as(user) }
+
+    describe 'ユーザー編集' do
+      context 'フォームの入力値が正常' do
+        it 'ユーザーの編集が成功する' do
+          visit edit_user_path(user)
+          fill_in 'ユーザー名', with: 'update_user'
+          fill_in 'メールアドレス', with: 'update@example.com'
+          fill_in 'パスワード', with: 'password'
+          fill_in 'パスワード(確認用)', with: 'password'
+          click_button '更新する'
+          expect(current_path).to eq user_path(user)
+        end
+      end
+
+      context 'メールアドレスが未入力' do
+        it 'ユーザーの編集が失敗する' do
+          visit edit_user_path(user)
+          fill_in 'ユーザー名', with: 'update_user'
+          fill_in 'メールアドレス', with: ''
+          fill_in 'パスワード', with: 'password'
+          fill_in 'パスワード(確認用)', with: 'password'
+          click_button '更新する'
+          expect(page).to have_content 'メールアドレスを入力してください'
+          expect(current_path).to eq user_path(user)
+        end
+      end
+
+      context '登録済みのメールアドレスを使用' do
+        it 'ユーザーの編集が失敗する' do
+          visit edit_user_path(user)
+          other_user = create(:user)
+          fill_in 'ユーザー名', with: 'update_user'
+          fill_in 'メールアドレス', with: other_user.email
+          fill_in 'パスワード', with: 'password'
+          fill_in 'パスワード(確認用)', with: 'password'
+          click_button '更新する'
+          expect(page).to have_content 'メールアドレスはすでに存在します'
+          expect(current_path).to eq user_path(user)
+        end
+      end
+
+      context '他ユーザーの編集ページにアクセス' do
+        let!(:other_user) { create(:user, email: "other_user@example.com") }
+
+        it '編集ページへのアクセスが失敗する' do
+          visit edit_user_path(other_user)
+          expect(page).to have_content '権限がありません'
+          expect(current_path).to eq user_path(other_user)
+        end
+      end
+    end
+  end
+end
