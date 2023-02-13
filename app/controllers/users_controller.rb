@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[  edit update destroy ]
+  before_action :set_user, only: %i[ edit update destroy show ]
+  before_action :require_login, only: %i[show]
+  before_action :check_user, only: %i[edit update]
 
 
   def new
@@ -14,16 +16,14 @@ class UsersController < ApplicationController
       if @user.save
         redirect_to login_path, notice: 'ユーザー作成完了したぜ'
       else
-        flash.now[:alert] = 'ユーザー作成できていません'
         render :new
       end
   end
 
   def update
     if @user.update(user_params)
-      redirect_to login_path, notice: 'ユーザーアップデートしたぜ！'
+      redirect_to user_path(@user), notice: 'ユーザーアップデートしたぜ！'
     else
-      flash.now[:alert] = 'ユーザーはそのままだよ？'
       render :edit
     end
   end
@@ -34,6 +34,8 @@ class UsersController < ApplicationController
     redirect_to root_path, notice: 'ユーザーを削除したぜ'
   end
 
+  def show; end
+
   private
 
     def set_user
@@ -42,6 +44,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :name)
+      params.require(:user).permit(:email, :password, :password_confirmation, :name, :avatar)
     end
 end

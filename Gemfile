@@ -6,7 +6,6 @@ ruby '3.2.0'
 gem 'rails', '~> 7.0.4'
 gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 5.0'
-gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -18,6 +17,11 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'sorcery'
 gem 'pry-byebug'
 gem 'rails-i18n'
+gem 'enum_help'
+gem 'mini_magick'
+gem 'image_processing'
+gem 'importmap-rails'
+gem 'draper'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,3 +61,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "tailwindcss-rails", "~> 2.0"
 
 gem "dartsass-rails", "~> 0.4.1"
+
+gem 'sassc-rails', '~> 2.1'
