@@ -30,5 +30,4 @@ class Post < ApplicationRecord
   def tag_names
     tags.map(&:name).join(',')
   end
-
 end

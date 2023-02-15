@@ -3,6 +3,5 @@ class UserDecorator < Draper::Decorator
 
   def avatar
     object.avatar.presence || 'default_avatar.png'
-  end  
-
+  end
 end

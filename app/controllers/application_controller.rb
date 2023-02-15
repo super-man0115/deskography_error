@@ -4,15 +4,14 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user
-    unless @user == current_user
-      redirect_to user_path(@user), alert: '権限がありません'
-    end
+    return if @user == current_user
+
+    redirect_to user_path(@user), alert: '権限がありません'
   end
 
   def check_post
-    unless @post.user == current_user
-      redirect_to post_path(@post), alert: '権限がありません'
-    end
-  end
+    return if @post.user == current_user
 
+    redirect_to post_path(@post), alert: '権限がありません'
+  end
 end

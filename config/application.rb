@@ -16,7 +16,10 @@ module Deskography
 
     config.generators do |g|
       g.test_framework :rspec,
-      decorator_specs: false,
-      view_specs: false
+                        decorator_specs: false,
+                        view_specs: false,
+                        helper_specs: false,
+                        request_specs: false
+    end
   end
 end
