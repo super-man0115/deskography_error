@@ -21,7 +21,7 @@ RSpec.describe 'Posts', type: :system do
           expect(current_path).to eq login_path
         end
       end
-      
+
       context 'ポストの詳細ページにアクセス' do
         it 'ポストの詳細情報が表示される' do
           visit post_path(post)
@@ -39,10 +39,10 @@ RSpec.describe 'Posts', type: :system do
           expect(page).to have_content post_list[2].title
           expect(current_path).to eq posts_path
         end
-      end    
+      end
     end
   end
-  
+
   describe 'ログイン後' do
     before { login_as(user) }
 
@@ -56,7 +56,7 @@ RSpec.describe 'Posts', type: :system do
             select 'デザイナー'
           end
           within 'select[name="post[age_group]"]' do
-            select  '30代'
+            select '30代'
           end
           attach_file 'post[main_image]', "#{Rails.root}/spec/fixtures/test_default.png"
           click_button '登録する'
@@ -77,7 +77,7 @@ RSpec.describe 'Posts', type: :system do
             select 'デザイナー'
           end
           within 'select[name="post[age_group]"]' do
-            select  '30代'
+            select '30代'
           end
           click_button '登録する'
           expect(page).to have_content 'メイン画像を入力してください'
@@ -87,8 +87,8 @@ RSpec.describe 'Posts', type: :system do
     end
 
     describe 'ポスト編集' do
-      let!(:post) { create(:post, user: user) }
-      let(:other_post) { create(:post, user: user) }
+      let!(:post) { create(:post, user:) }
+      let(:other_post) { create(:post, user:) }
       before { visit edit_post_path(post) }
 
       context 'フォームの入力値が正常' do
@@ -99,7 +99,7 @@ RSpec.describe 'Posts', type: :system do
             select 'エンジニア'
           end
           within 'select[name="post[age_group]"]' do
-            select  '20代'
+            select '20代'
           end
           attach_file 'post[main_image]', "#{Rails.root}/spec/fixtures/test_default.png"
           click_button '更新する'
@@ -115,13 +115,13 @@ RSpec.describe 'Posts', type: :system do
       context '他ユーザーのタスク編集ページにアクセス' do
         let!(:other_user) { create(:user, email: "other_user@example.com") }
         let!(:other_post) { create(:post, user: other_user) }
-        
+
         it '編集ページへのアクセスが失敗する' do
           visit edit_post_path(other_post)
           expect(page).to have_content '権限がありません'
           expect(current_path).to eq post_path(other_post)
         end
-      end    
-    end      
-  end        
-end  
+      end
+    end
+  end
+end

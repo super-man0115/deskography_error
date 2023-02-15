@@ -20,8 +20,8 @@ end
     description: "説明#{index}",
     business_attribute: rand(0..10),
     age_group: rand(0..5)
-  )  
-  
+  )
+
   post.main_image.attach(
     io: File.open('app/assets/images/default.png'),
     filename: 'default.png'
